@@ -1,0 +1,38 @@
+We have the following files
+
+Tweets.csv:
+    * user_name
+    * text
+    * place_name
+
+Users.csv:
+    * user_name
+    * name 
+
+CREATE CONSTRAINT ON (user: User) ASSERT user.user_name IS UNIQUE;
+CREATE CONSTRAINT ON (place: Place) ASSERT place.place_name IS UNIQUE;
+CREATE INDEX ON :Place(name);
+
+# Create user
+LOAD CSV WITH HEADERS FROM "file:///users_1.0.csv" AS csvLine
+MERGE (user:User {user_name: csvLine.user_name, name: csvLine.name})
+
+# Ceate Tweets and Place and relation to their user 
+LOAD CSV WITH HEADERS FROM "file:///tweets_1.0.csv" as csvLine
+MERGE (place: Place {name: csvLine.place_name, country: csvLine.country})
+CREATE (tweet:Tweet {text: csvLine.text})
+    WITH place, tweet, csvLine
+    MATCH (user: User {user_name: csvLine.user_name})
+    CREATE (user)<-[:WRITE]-(tweet)-[:AREA]->(place)
+
+
+# Queries
+
+MATCH (n:Place{name:"Madrid"}) RETURN (n)<--()-->()
+
+
+
+
+
+
+
