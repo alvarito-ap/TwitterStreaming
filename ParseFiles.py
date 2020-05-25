@@ -1,9 +1,8 @@
 import pandas as pd 
 import os
 
-
-df = pd.read_csv("Extraction/Extraction1.csv")
-saveIteration = len( [file for file in os.listdir('Extraction') if not file.startswith('.')] ) / 2
+saveIteration = len( [file for file in os.listdir('Extraction') if not file.startswith('.')] )
+df = pd.read_csv("Extraction/Extraction_{}.csv".format(saveIteration))
 
 # Extract Users
 users = df.loc[:, ['user_name', 'name']].drop_duplicates()
