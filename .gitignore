@@ -3,6 +3,6 @@ Core/
 Extraction/
 Upload/
 *.pages
-.DS_Store
-.gitignore
+DS_Store
+gitignore
 
